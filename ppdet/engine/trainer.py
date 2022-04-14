@@ -555,8 +555,10 @@ class Trainer(object):
         for step_id, data in enumerate(loader):
             self.status['step_id'] = step_id
             # forward
+            start = time.time()
             outs = self.model(data)
-
+            end = time.time()
+            print(f'infer time: {end-start}')
             for key in ['im_shape', 'scale_factor', 'im_id']:
                 if isinstance(data, typing.Sequence):
                     outs[key] = data[0][key]

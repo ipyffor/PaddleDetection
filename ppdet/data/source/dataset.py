@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import cv2
 import numpy as np
 
 try:
@@ -63,6 +64,14 @@ class DetDataset(Dataset):
     def __getitem__(self, idx):
         # data batch
         roidb = copy.deepcopy(self.roidbs[idx])
+        # img = cv2.imread(roidb['im_file'])
+        # bbox = roidb['gt_bbox'].astype('int').flatten()
+        # cv2.namedWindow('test', cv2.WINDOW_NORMAL)
+        # cv2.resizeWindow('test', 800, 800)
+        # x1, y1, x2, y2 = bbox
+        # cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        # cv2.imshow('test', img)
+        # cv2.waitKey(1)
         if self.mixup_epoch == 0 or self._epoch < self.mixup_epoch:
             n = len(self.roidbs)
             idx = np.random.randint(n)

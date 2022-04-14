@@ -1,0 +1,41 @@
+_BASE_: [
+  '../runtime.yml',
+  './_base_/optimizer_300e.yml',
+  './_base_/ppyoloe_crn.yml',
+  './_base_/ppyoloe_reader.yml',
+]
+
+metric: COCO
+num_classes: 1
+
+TrainDataset:
+  !COCODataSet
+    image_dir: ""
+    anno_path: instance_train.json
+    dataset_dir: ../../datasets/detect_keypoints/coco
+    data_fields: ['image', 'gt_bbox', 'gt_class', 'is_crowd']
+
+EvalDataset:
+  !COCODataSet
+    image_dir: ""
+    anno_path: instance_eval.json
+    dataset_dir: ../../datasets/detect_keypoints/coco
+
+TestDataset:
+  !ImageFolder
+    anno_path: ""
+
+
+log_iter: 100
+snapshot_epoch: 10
+weights: output/ppyoloe_crn_s_300e_coco_ship/model_final
+
+pretrain_weights: /home/ubuntu/.cache/paddle/weights/CSPResNetb_s_pretrained.pdparams
+depth_mult: 0.33
+width_mult: 0.50
+
+TrainReader:
+  batch_size: 8
+
+LearningRate:
+  base_lr: 0.01
