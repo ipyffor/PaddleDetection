@@ -204,3 +204,18 @@ class ImageFolder(DetDataset):
     def set_images(self, images):
         self.image_dir = images
         self.roidbs = self._load_images()
+    def set_images_from_arr(self, images):
+        # images = self._parse()
+        ct = 0
+        records = []
+        for image in images:
+            assert image != '' and os.path.isfile(image), \
+                    "Image {} not found".format(image)
+            if self.sample_num > 0 and ct >= self.sample_num:
+                break
+            rec = {'im_id': np.array([ct]), 'im_file': image}
+            self._imid2path[ct] = image
+            ct += 1
+            records.append(rec)
+        assert len(records) > 0, "No image file found"
+        return records
